@@ -1,4 +1,4 @@
-# i learned some commands in git & githup
+# week1/i learned some commands in git & githup
 #week2:some concepts about embedded systerms /
 # in general the main components of a cpu ,ram,i/o and many cascadded componants to produce what we know today
 
