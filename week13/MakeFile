@@ -1,0 +1,30 @@
+# Define variables
+CC = arm-none-eabi-gcc
+CFLAGS = -mcpu=$(ACH) -std=gnu11 -mthumb
+ACH = cortex-m4
+
+# Source and output files
+SRC = main.c
+OBJ = main.o
+EXE = main.elf
+
+# Default rule to build everything
+all: $(OBJ)
+
+# Rule to compile the source file into an object file
+$(OBJ): $(SRC)
+	@$(CC) $(CFLAGS) -c $^ -o $@
+
+# Rule to clean the project directory
+clean:
+	@rm -f $(OBJ) $(EXE)
+
+# Rule to perform static code analysis
+analyze: $(OBJ)
+	@arm-none-eabi-objdump -d $(OBJ)
+
+# Rule to compile with debug symbols
+debug: CFLAGS += -g
+debug: $(OBJ)
+	@$(CC) $(CFLAGS) -o $(EXE) $(OBJ)
+
