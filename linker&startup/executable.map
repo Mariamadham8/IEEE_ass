@@ -1,0 +1,125 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x08000000         0x00080000         xr
+SRAM             0x20000000         0x00020000         rw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD GPIO_Prog.o
+LOAD RCC_Prog.o
+LOAD SysTick_Prog.o
+LOAD startup.o
+
+.text           0x08000000      0xcfc
+ *(.isr_vector)
+ *(.text)
+ .text          0x08000000       0x40 main.o
+                0x08000000                main
+ .text          0x08000040      0x4ac GPIO_Prog.o
+                0x08000040                GPIO_u8PinInit
+                0x08000264                GPIO_u8SetPinValue
+                0x08000344                GPIO_u8TogglePinValue
+                0x08000410                GPIO_u8ReadPinValue
+ .text          0x080004ec      0x5b8 RCC_Prog.o
+                0x080004ec                RCC_SetSysClock
+                0x0800052c                RCC_SetClockStatus
+                0x0800074c                RCC_PLLMConfig
+                0x08000810                RCC_AHBConfig
+                0x08000850                RCC_APBConfig
+                0x080008b0                RCC_AHB1EnableClock
+                0x080008e0                RCC_AHB1DisableClock
+                0x08000914                RCC_AHB2EnableClock
+                0x08000944                RCC_AHB2DisableClock
+                0x08000978                RCC_AHB3EnableClock
+                0x080009a8                RCC_AHB3DisableClock
+                0x080009dc                RCC_APB1EnableClock
+                0x08000a0c                RCC_APB1DisableClock
+                0x08000a40                RCC_APB2EnableClock
+                0x08000a70                RCC_APB2DisableClock
+ .text          0x08000aa4      0x1d4 SysTick_Prog.o
+                0x08000aa4                SysTick_Init
+                0x08000b04                SysTick_Delayus
+                0x08000b78                SysTick_Delayms
+                0x08000b98                SysTick_InterruptTimer_ms
+                0x08000c0c                SysTick_DisableInterrupt
+                0x08000c28                Systick_InterruptSetCallBack
+                0x08000c5c                SysTick_Handler
+ .text          0x08000c78       0x84 startup.o
+                0x08000c78                Default_Handler
+                0x08000c78                NMI_Handler
+                0x08000c7e                Reset_Handler
+ *(.rodata)
+                0x08000cfc                        . = ALIGN (0x4)
+                0x08000cfc                        _etext = .
+
+.glue_7         0x08000cfc        0x0
+ .glue_7        0x08000cfc        0x0 linker stubs
+
+.glue_7t        0x08000cfc        0x0
+ .glue_7t       0x08000cfc        0x0 linker stubs
+
+.vfp11_veneer   0x08000cfc        0x0
+ .vfp11_veneer  0x08000cfc        0x0 linker stubs
+
+.v4_bx          0x08000cfc        0x0
+ .v4_bx         0x08000cfc        0x0 linker stubs
+
+.iplt           0x08000cfc        0x0
+ .iplt          0x08000cfc        0x0 main.o
+
+.rel.dyn        0x08000cfc        0x0
+ .rel.iplt      0x08000cfc        0x0 main.o
+
+.data           0x20000000        0x0 load address 0x08000cfc
+                0x20000000                        _sdata = .
+ *(.data)
+ .data          0x20000000        0x0 main.o
+ .data          0x20000000        0x0 GPIO_Prog.o
+ .data          0x20000000        0x0 RCC_Prog.o
+ .data          0x20000000        0x0 SysTick_Prog.o
+ .data          0x20000000        0x0 startup.o
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _edata = .
+
+.igot.plt       0x20000000        0x0 load address 0x08000cfc
+ .igot.plt      0x20000000        0x0 main.o
+
+.bss            0x20000000        0x8 load address 0x08000cfc
+                0x20000000                        _sbss = .
+ *(.bss)
+ .bss           0x20000000        0x0 main.o
+ .bss           0x20000000        0x0 GPIO_Prog.o
+ .bss           0x20000000        0x0 RCC_Prog.o
+ .bss           0x20000000        0x8 SysTick_Prog.o
+ .bss           0x20000008        0x0 startup.o
+                0x20000008                        . = ALIGN (0x4)
+                0x20000008                        _ebss = .
+OUTPUT(executable.elf elf32-littlearm)
+LOAD linker stubs
+
+.comment        0x00000000       0x45
+ .comment       0x00000000       0x45 main.o
+                                 0x46 (size before relaxing)
+ .comment       0x00000045       0x46 GPIO_Prog.o
+ .comment       0x00000045       0x46 RCC_Prog.o
+ .comment       0x00000045       0x46 SysTick_Prog.o
+ .comment       0x00000045       0x46 startup.o
+
+.ARM.attributes
+                0x00000000       0x2e
+ .ARM.attributes
+                0x00000000       0x2e main.o
+ .ARM.attributes
+                0x0000002e       0x2e GPIO_Prog.o
+ .ARM.attributes
+                0x0000005c       0x2e RCC_Prog.o
+ .ARM.attributes
+                0x0000008a       0x2e SysTick_Prog.o
+ .ARM.attributes
+                0x000000b8       0x2e startup.o
