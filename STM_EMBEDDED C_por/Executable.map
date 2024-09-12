@@ -1,0 +1,119 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x08000000         0x00010000         xr
+SRAM             0x20000000         0x00005000         rw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD lcd.o
+LOAD startup_stm32f103xb.o
+LOAD Stm32_F103C6_GPIO.o
+
+.text           0x08000000      0x988
+ *(.isr_vector)
+ .isr_vector    0x08000000       0x14 startup_stm32f103xb.o
+                0x08000000                isr_vectors
+ *(.text)
+ .text          0x08000014       0x9c main.o
+                0x08000014                clock_init
+                0x0800003c                wait_ms
+                0x08000076                main
+ .text          0x080000b0      0x408 lcd.o
+                0x080000ea                LCD_GPIO_init
+                0x08000244                lcd_is_busy
+                0x0800031c                lcd_kick
+                0x08000348                lcd_send_command
+                0x0800038c                lcd_init
+                0x080003c0                lcd_send_char
+                0x08000404                lcd_send_string
+                0x0800045e                lcd_set_position
+                0x080004a8                lcd_clear
+ .text          0x080004b8       0x84 startup_stm32f103xb.o
+                0x080004b8                NMI_Handler
+                0x080004b8                LCD_Handler
+                0x080004b8                Default_Handler
+                0x080004b8                HardFault_Handler
+                0x080004be                Reset_Handler
+ .text          0x0800053c      0x43c Stm32_F103C6_GPIO.o
+                0x0800053c                Get_Bit_Location
+                0x080006aa                MCAL_GPIO_Init
+                0x080007a2                MCAL_GPIO_DeInit
+                0x08000874                MCAL_GPIO_ReadPin
+                0x080008a2                MCAL_GPIO_ReadPort
+                0x080008bc                MCAL_GPIO_WritePort
+                0x080008d8                MCAL_GPIO_WritePin
+                0x08000906                MCAL_GPIO_TogglePin
+                0x08000928                MCAL_GPIO_LockPin
+ *(.rodata)
+ .rodata        0x08000978        0xf main.o
+                0x08000988                        . = ALIGN (0x4)
+ *fill*         0x08000987        0x1 
+                0x08000988                        _etext = .
+
+.glue_7         0x08000988        0x0
+ .glue_7        0x08000988        0x0 linker stubs
+
+.glue_7t        0x08000988        0x0
+ .glue_7t       0x08000988        0x0 linker stubs
+
+.vfp11_veneer   0x08000988        0x0
+ .vfp11_veneer  0x08000988        0x0 linker stubs
+
+.v4_bx          0x08000988        0x0
+ .v4_bx         0x08000988        0x0 linker stubs
+
+.iplt           0x08000988        0x0
+ .iplt          0x08000988        0x0 main.o
+
+.rel.dyn        0x08000988        0x0
+ .rel.iplt      0x08000988        0x0 main.o
+
+.data           0x20000000        0x0 load address 0x08000988
+                0x20000000                        _sdata = .
+ *(.data)
+ .data          0x20000000        0x0 main.o
+ .data          0x20000000        0x0 lcd.o
+ .data          0x20000000        0x0 startup_stm32f103xb.o
+ .data          0x20000000        0x0 Stm32_F103C6_GPIO.o
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _edata = .
+
+.igot.plt       0x20000000        0x0 load address 0x08000988
+ .igot.plt      0x20000000        0x0 main.o
+
+.bss            0x20000000        0x4 load address 0x08000988
+                0x20000000                        _sbss = .
+ *(.bss)
+ .bss           0x20000000        0x0 main.o
+ .bss           0x20000000        0x4 lcd.o
+                0x20000000                PinCfg
+ .bss           0x20000004        0x0 startup_stm32f103xb.o
+ .bss           0x20000004        0x0 Stm32_F103C6_GPIO.o
+                0x20000004                        . = ALIGN (0x4)
+                0x20000004                        _ebss = .
+OUTPUT(Executable.elf elf32-littlearm)
+LOAD linker stubs
+
+.comment        0x00000000       0x45
+ .comment       0x00000000       0x45 main.o
+                                 0x46 (size before relaxing)
+ .comment       0x00000045       0x46 lcd.o
+ .comment       0x00000045       0x46 startup_stm32f103xb.o
+ .comment       0x00000045       0x46 Stm32_F103C6_GPIO.o
+
+.ARM.attributes
+                0x00000000       0x2d
+ .ARM.attributes
+                0x00000000       0x2d main.o
+ .ARM.attributes
+                0x0000002d       0x2d lcd.o
+ .ARM.attributes
+                0x0000005a       0x2d startup_stm32f103xb.o
+ .ARM.attributes
+                0x00000087       0x2d Stm32_F103C6_GPIO.o
